@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNO R4 WiFi Car Controller</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>UNO R4 WiFi Car Controller</h2>
+
+  <div class="steering">
+    <canvas id="wheel" width="200" height="200"></canvas>
+    <span id="steerVal">0°</span>
+  </div>
+
+  <div class="controls">
+    <button id="direction" onclick="toggleDirection()">Forward</button>
+  </div>
+
+  <div class="pedals">
+    <button id="gas" onclick="accelerate()">🚀 Gas</button>
+    <button id="brake" onclick="brake()">🛑 Brake</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

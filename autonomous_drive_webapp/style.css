@@ -1,0 +1,67 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #111;
+  color: #fff;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.steering {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+#direction {
+  width: 140px;
+  height: 60px;
+  background: #2e8b57;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#direction.backward {
+  background: #a0522d;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.pedals {
+  display: flex;
+  gap: 40px;
+}
+
+button {
+  border: none;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#gas {
+  background: #2e8b57;
+  color: white;
+}
+
+#brake {
+  background: #a00;
+  color: white;
+}

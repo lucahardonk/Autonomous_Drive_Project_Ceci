@@ -1,31 +1,16 @@
 #include <Servo.h>  
+#include <WiFiS3.h>
+
+#include "WebControl.h"
 #include "Motor.h"   
 #include "Encoder.h" 
-
-#include <WiFiS3.h>
-#include "WebControl.h"
+#include "Sterzo.h"
 
 const char* ssid = "casa_wireless";
 const char* password = "wireless_casa_88";
 
 // ── Servo ──────────────────────
-Servo sterzo;
-
-int minLeft = 20 ;
-int center = 90;
-int maxRight = 160;
-
-void setSterzo(int relativePos) {
-  // Compute absolute position
-  int target = center + relativePos;
-
-  // Clamp to limits
-  if (target < minLeft)  target = minLeft;
-  if (target > maxRight) target = maxRight;
-
-  // Write to servo
-  sterzo.write(target);
-}
+Sterzo sterzo;
 
 // ── Encoder ──────────────────────
 Encoder leftEncoder(2, 3, 836);
@@ -42,7 +27,7 @@ void setup() {
   leftMotor.begin();
   rightMotor.begin();
   sterzo.attach(11);
-  setSterzo(0);
+  sterzo.set(0); 
   Serial.println("starting...");
 
 
@@ -124,9 +109,9 @@ void processCommand(String cmd) {
   else if (cmd.startsWith("rightMotor.Stop()")) {
     rightMotor.Stop();
   }
-  else if (cmd.startsWith("setSterzo(")) {
+  else if (cmd.startsWith("sterzo.set(")) {
     int val = extractValue(cmd);
-    setSterzo(val);
+    sterzo.set(val);
   }
   else {
     Serial.println("⚠️ Unknown command");
