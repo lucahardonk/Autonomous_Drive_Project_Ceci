@@ -1,78 +1,69 @@
-import pygame
-import requests
-import time
+import socket, json, pygame, time
 
-# === CONFIGURATION ===
-API_BASE = "http://192.168.1.162"   # ← change to your ESP or server IP
-DEADZONE = 0.05
+# === Network configuration ===
+UDP_IP = "192.168.1.162"   # Arduino R4 WiFi IP
+UDP_PORT = 8888            # UDP port on Arduino
 
-# === INIT JOYSTICK ===
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# === Initialize joystick ===
 pygame.init()
-pygame.joystick.init()
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
+j = pygame.joystick.Joystick(0)
+j.init()
 
-print(f"🎮 Controller: {joystick.get_name()}")
-print(f"Axes: {joystick.get_numaxes()}, Buttons: {joystick.get_numbuttons()}")
+print(f"🎮 Sending joystick data to {UDP_IP}:{UDP_PORT} at 50 Hz")
 
-current_speed = 0
-last_steer = 0
-direction = "forward"  # 💡 track current direction
-
-def clamp(val, minv, maxv):
-    return max(min(val, maxv), minv)
+# === State ===
+direction = "STOP"
 
 while True:
     pygame.event.pump()
 
-    # === AXES ===
-    steer = joystick.get_axis(0)
-    gas = joystick.get_axis(5)
-    brake = joystick.get_axis(2)
+    # --- Read joystick values ---
+    steer = j.get_axis(0)       # axes[0]: steering (-1 left → +1 right)
+    gas = j.get_axis(5)         # axes[5]: gas pedal (-1 default → +1 max)
+    brake = j.get_axis(2)       # axes[2]: brake pedal (-1 default → +1 max)
+    forward = j.get_button(5)   # button[5]: set direction to FORWARD
+    backward = j.get_button(4)  # button[4]: set direction to BACKWARD
 
-    gas = (gas + 1) / 2
-    brake = (brake + 1) / 2
+    # --- Normalize pedals ---
+    gas_norm = (gas + 1) / 2    # -1 → 0, +1 → 1
+    brake_norm = (brake + 1) / 2
 
-    # === BUTTONS ===
-    forward_btn = joystick.get_button(5)
-    backward_btn = joystick.get_button(4)
+    # --- Latch direction ---
+    if forward:
+        direction = "FORWARD"
+    elif backward:
+        direction = "BACKWARD"
 
-    # === UPDATE DIRECTION ===
-    if forward_btn:
-        direction = "forward"
-        print("→ Direction set to FORWARD")
-        time.sleep(0.2)
+    # --- Determine movement based on gas pedal and direction ---
+    if gas_norm > 0.05:  # threshold to ignore noise
+        if direction == "FORWARD":
+            x = gas_norm
+        elif direction == "BACKWARD":
+            x = -gas_norm
+        else:
+            x = 0.0
+    else:
+        x = 0.0  # no gas → no movement
 
-    if backward_btn:
-        direction = "backward"
-        print("← Direction set to BACKWARD")
-        time.sleep(0.2)
+    # --- Optional brake override ---
+    if brake_norm > 0.7:  # hard brake
+        x = 0.0
 
-    # === STEERING ===
-    if abs(steer - last_steer) > DEADZONE:
-        angle = int(clamp(steer * 70, -70, 70))
-        try:
-            requests.get(f"{API_BASE}/steer?val={angle}", timeout=0.1)
-            print(f"Steering → {angle}")
-        except requests.RequestException:
-            pass
-        last_steer = steer
+    y = steer
+    z = 0.0
 
-    # === GAS CONTROL ===
-    if gas > 0.1:
-        speed = int(gas * 255)
-        try:
-            requests.get(f"{API_BASE}/{direction}", timeout=0.1)
-            print(f"🚗 {direction.capitalize()} speed: {speed}")
-        except requests.RequestException:
-            pass
+    # --- Build and send UDP JSON packet ---
+    msg = json.dumps({
+        "x": round(x, 2),
+        "y": round(y, 2),
+        "z": z,
+        "direction": direction
+    })
+    sock.sendto(msg.encode(), (UDP_IP, UDP_PORT))
 
-    # === BRAKE ===
-    if brake > 0.5:
-        try:
-            requests.get(f"{API_BASE}/stop", timeout=0.1)
-            print("🛑 Brake")
-        except requests.RequestException:
-            pass
+    # --- Debug output ---
+    print(f"Dir: {direction:8s} | Gas: {gas_norm:.2f} | Brake: {brake_norm:.2f} | Steer: {y:.2f} | x={x:.2f}")
 
-    time.sleep(0.05)
+    time.sleep(0.02)  # 50 Hz

@@ -1,93 +1,82 @@
 #include "WebControl.h"
 #include "Sterzo.h"
+#include <WiFiUdp.h>
 using namespace ArduinoHttpServer;
 
-WiFiServer wifiServer(80);
+WiFiUDP udp;
 WebControlClass WebControl;
 extern void processCommand(String cmd);
-extern Sterzo sterzo;  // from your main.ino
+extern Sterzo sterzo;  // definito nel main.ino
 
 void WebControlClass::begin() {
-  wifiServer.begin();
-  Serial.println("🌐 Web API server started on port 80");
+  udp.begin(8888);
+  Serial.println("📡 UDP control server started on port 8888");
 }
 
 void WebControlClass::handleClient() {
-  WiFiClient client = wifiServer.available();
-  if (!client) return;
-  handleRequest(client);
-  client.stop();
+  int packetSize = udp.parsePacket();
+  if (packetSize <= 0) return;
+
+  char buffer[128];
+  int len = udp.read(buffer, sizeof(buffer) - 1);
+  if (len <= 0) return;
+  buffer[len] = '\0';
+
+  handleRequest(buffer);
 }
 
-void WebControlClass::handleRequest(WiFiClient& client) {
-  StreamHttpRequest<512> request(client);
-  if (!request.readRequest()) return;
+void WebControlClass::handleRequest(const char* body) {
+  float x = 0.0, y = 0.0, z = 0.0;
 
-  String path = request.getResource().toString();
-  StreamHttpReply reply(client, "application/json");
+  // Quick JSON parse (simple & fast)
+  String msg(body);
+  int xi = msg.indexOf("\"x\":");
+  int yi = msg.indexOf("\"y\":");
+  int zi = msg.indexOf("\"z\":");
 
-  // Enable CORS for browser access
-  reply.addHeader("Access-Control-Allow-Origin", "*");
-  reply.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  reply.addHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (xi >= 0) x = msg.substring(xi + 4, msg.indexOf(",", xi)).toFloat();
+  if (yi >= 0) y = msg.substring(yi + 4, msg.indexOf(",", yi)).toFloat();
+  if (zi >= 0) z = msg.substring(zi + 4).toFloat();
 
-  static int currentSpeed = 0;
-  static int currentSteer = 0;
-
-  auto clamp = [](int val, int minV, int maxV) {
-    return (val < minV) ? minV : (val > maxV ? maxV : val);
+  auto clamp = [](float v, float minV, float maxV) {
+    return (v < minV) ? minV : (v > maxV ? maxV : v);
   };
+  x = clamp(x, -1.0, 1.0);
+  y = clamp(y, -1.0, 1.0);
+  z = clamp(z, -1.0, 1.0);
 
-  // === API ROUTES ===
-  if (path == "/forward") {
-    currentSpeed = clamp(currentSpeed + 10, 0, 255);
-    handleCommand("leftMotor.Forward(" + String(currentSpeed) + ")", reply);
-    handleCommand("rightMotor.Forward(" + String(currentSpeed) + ")", reply);
-    reply.send("{\"action\":\"forward\",\"speed\":" + String(currentSpeed) + "}");
-    Serial.println("🚗 Forward");
+  // === Controllo motori ===
+  int speed = abs(x) * 255;
+  if (x > 0.05) {
+    processCommand("leftMotor.Forward(" + String(speed) + ")");
+    processCommand("rightMotor.Forward(" + String(speed) + ")");
+  } else if (x < -0.05) {
+    processCommand("leftMotor.Backward(" + String(speed) + ")");
+    processCommand("rightMotor.Backward(" + String(speed) + ")");
+  } else {
+    processCommand("leftMotor.Stop()");
+    processCommand("rightMotor.Stop()");
   }
 
-  else if (path == "/backward") {
-    currentSpeed = clamp(currentSpeed + 10, 0, 255);
-    handleCommand("leftMotor.Backward(" + String(currentSpeed) + ")", reply);
-    handleCommand("rightMotor.Backward(" + String(currentSpeed) + ")", reply);
-    reply.send("{\"action\":\"backward\",\"speed\":" + String(currentSpeed) + "}");
-    Serial.println("🔙 Backward");
+  // === Sterzo ===
+  int steerAngle = int(y * 70);
+  processCommand("sterzo.set(" + String(steerAngle) + ")");
+
+  // === Pulsante Z ===
+  if (z > 0.5) {
+    processCommand("leftMotor.Stop()");
+    processCommand("rightMotor.Stop()");
   }
 
-  else if (path.startsWith("/steer")) {
-    int val = 0;
-    int idx = path.indexOf("val=");
-    if (idx >= 0) val = path.substring(idx + 4).toInt();
-    currentSteer = clamp(val, -70, 70);
-    handleCommand("sterzo.set(" + String(currentSteer) + ")", reply);
-    reply.send("{\"action\":\"steer\",\"angle\":" + String(currentSteer) + "}");
+  // Debug frequency print (optional)
+  static unsigned long last = 0;
+  unsigned long now = millis();
+  if (last > 0) {
+    float dt = now - last;
+    float hz = 1000.0 / dt;
+    Serial.print("[UDP] ");
+    Serial.print(hz, 1);
+    Serial.println(" Hz");
   }
-
-  else if (path == "/stop") {
-    currentSpeed = 0;
-    currentSteer = 0;
-    handleCommand("leftMotor.Stop()", reply);
-    handleCommand("rightMotor.Stop()", reply);
-    handleCommand("sterzo.set(0)", reply);
-    reply.send("{\"action\":\"stop\",\"speed\":0,\"steer\":0}");
-    Serial.println("🛑 Stop");
-  }
-
-  else if (path == "/steer/limits") {
-    String json = "{";
-    json += "\"minLeft\":" + String(sterzo.getMinLeft()) + ",";
-    json += "\"maxRight\":" + String(sterzo.getMaxRight()) + ",";
-    json += "\"center\":" + String(sterzo.getCenter());
-    json += "}";
-    reply.send(json);
-  }
-
-  else {
-    reply.send("{\"status\":\"ok\",\"info\":\"UNO R4 WiFi API ready\"}");
-  }
-}
-
-void WebControlClass::handleCommand(const String& cmd, StreamHttpReply& reply) {
-  processCommand(cmd);
+  last = now;
 }
