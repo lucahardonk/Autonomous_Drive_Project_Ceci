@@ -2,7 +2,7 @@
 
 - [🚗 Struttura del progetto](#-struttura-del-progetto)
 - [📁 Struttura dettagliata dei file](#-struttura-dettagliata-dei-file)
-- [⚙️ Installazione e Avvio](#-installazione-e-avvio)
+- [⚙️ Installazione e Avvio](#installazione-e-avvio)
 - [🧩 Diagramma fisico del sistema](#-diagramma-fisico-del-sistema)
 - [👤 Autori](#-autori)
 
