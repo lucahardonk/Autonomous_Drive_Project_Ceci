@@ -1,16 +1,3 @@
-### Diagramma fisico del sistema
-
-Questo schema mostra il collegamento fisico tra i principali componenti del veicolo:<br>
-🔋 Batteria (12V) – alimenta l’intero sistema.<br>
-⚙️ Modulo DC-DC (12V → 6V) – riduce la tensione da 12V a 6V.<br>
-🧠 Scheda Arduino – alimentata a 6V tramite il modulo DC-DC.<br>
-🛞 Driver dei motori – alimentati direttamente dalla batteria a 12V.<br>
-⚡ Encoder – forniscono il feedback di rotazione per il controllo dei motori.<br>
-🔁 Servo motore – alimentato a 6V, gestisce la direzione del veicolo.<br>
-<br>
-![](physical_diagram.png)
-
-
 ## 🚗 Autonomous Drive Project
 
 Il progetto **Autonomous Drive** ha l’obiettivo di realizzare una piattaforma sperimentale per la **guida autonoma** in scala ridotta, basata su **Arduino UNO R4 WiFi**.  
@@ -38,10 +25,83 @@ Attualmente, il sistema può essere controllato **manualmente** tramite una **we
   L’app permette di:  
   - Inviare comandi manuali di **avanti, indietro, destra e sinistra**.  
   - Monitorare lo stato del veicolo in tempo reale.  
-  - Interagire con Arduino tramite connessione Wi-Fi.  
+  - Interagire con Arduino tramite connessione Wi-Fi.
 
 ---
 
 ### ⚡ Obiettivo
 
 In questa fase il veicolo è **a controllo manuale**, ma il progetto è pensato per essere esteso con funzioni di **guida autonoma** basate su sensori e algoritmi di controllo.
+
+---
+
+
+
+
+## 📁 Struttura dettagliata dei file
+
+Questa sezione descrive nel dettaglio i file che compongono il progetto e il loro ruolo all’interno del sistema.
+
+---
+
+### 🧠 `autonomous_drive_firmware/`
+
+Contiene il firmware principale scritto in **C/C++** per **Arduino UNO R4 WiFi**.  
+È responsabile della logica di controllo del veicolo e della comunicazione con la web app.
+
+- **`Encoder.h` / `Encoder.cpp`**  
+  Gestiscono la lettura degli encoder collegati ai motori, fornendo velocità e posizione angolare delle ruote.
+
+- **`Motor.h` / `Motor.cpp`**  
+  Implementano le funzioni per il controllo dei motori DC: direzione, potenza e gestione della velocità.
+
+- **`Sterzo.h` / `Sterzo.cpp`**  
+  Gestiscono il controllo del **servo motore** per la sterzata del veicolo.
+
+- **`WebControl.h` / `WebControl.cpp`**  
+  Si occupano della comunicazione Wi-Fi tra la scheda Arduino e la web app tramite l'endpoint.
+
+- **`autonomous_drive_firmware.ino`**  
+  File principale dell’applicazione Arduino: inizializza i moduli, imposta la connessione Wi-Fi e coordina l’esecuzione del programma.
+
+---
+
+### ⚙️ `autonomous_drive_hardware_steer/`
+
+Contiene il file Python per la gestione hardware dello sterzo.  
+
+- **`main.py`**  
+  Gestisce l' **endpoint** di comunicazione con la scheda Arduino, mantenendo la frequenza di aggiornamento a **50 Hz**.  
+  Si occupa della trasmissione stabile dei comandi di sterzo e della gestione dei segnali hardware.
+
+---
+
+### 🌐 `autonomous_drive_webapp/`
+
+Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata con **HTML**, **CSS** e **JavaScript**.
+
+- **`index.html`**  
+  Struttura principale della web app: pulsanti di controllo, area di stato e interfaccia grafica.
+
+- **`style.css`**  
+  Definisce il layout e lo stile dell’interfaccia (colori, pulsanti, spaziature).
+
+- **`script.js`**  
+  Contiene la logica di controllo lato client.  
+  Invia comandi di movimento alla scheda Arduino e aggiorna lo stato del veicolo in tempo reale.
+
+---
+
+
+
+## Diagramma fisico del sistema
+
+Questo schema mostra il collegamento fisico tra i principali componenti del veicolo:<br>
+🔋 Batteria (12V) – alimenta l’intero sistema.<br>
+⚙️ Modulo DC-DC (12V → 6V) – riduce la tensione da 12V a 6V.<br>
+🧠 Scheda Arduino – alimentata a 6V tramite il modulo DC-DC.<br>
+🛞 Driver dei motori – alimentati direttamente dalla batteria a 12V.<br>
+⚡ Encoder – forniscono il feedback di rotazione per il controllo dei motori.<br>
+🔁 Servo motore – alimentato a 6V, gestisce la direzione del veicolo.<br>
+<br>
+![](physical_diagram.png)
