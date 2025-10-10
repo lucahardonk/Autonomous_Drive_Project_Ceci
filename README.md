@@ -1,4 +1,4 @@
-## 📚 Indice
+# 📚 Indice
 
 - [🚗 Struttura del progetto](#-struttura-del-progetto)
 - [📁 Struttura dettagliata dei file](#-struttura-dettagliata-dei-file)
