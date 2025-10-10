@@ -2,7 +2,7 @@
 
 - [🔧 Struttura del progetto](#-struttura-del-progetto)
 - [📁 Struttura dettagliata dei file](#-struttura-dettagliata-dei-file)
-- [▶️ Installazione e avvio](#-installazione-e-avvio)
+- [🚀 Installazione e avvio](#-installazione-e-avvio)
 - [🧩 Diagramma fisico del sistema](#-diagramma-fisico-del-sistema)
 - [👤 Autori](#-autori)
 
@@ -95,7 +95,7 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
 ---
 
 
-## ▶️ Installazione e avvio
+## 🚀 Installazione e avvio
 
 1. **Caricare il firmware Arduino**
    - Apri `autonomous_drive_firmware.ino` in Arduino IDE.  
