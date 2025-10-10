@@ -1,4 +1,4 @@
-![Arduino](https://img.shields.io/badge/Arduino-UNO%20R4%20WiFi-00979D?logo=arduino&logoColor=white)
+![Arduino](https://img.shields.io/badge/Arduino-UNO%20R4%20WiFi-00979D?logo=arduino&logoColor=white)            ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
 # 📚 Indice
 
 - [🔧 Struttura del progetto](#-struttura-del-progetto)
