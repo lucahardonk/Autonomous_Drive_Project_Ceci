@@ -3,7 +3,6 @@
 Il progetto **Autonomous Drive** ha l’obiettivo di realizzare una piattaforma sperimentale per la **guida autonoma** in scala ridotta, basata su **Arduino UNO R4 WiFi**.  
 Attualmente, il sistema può essere controllato **manualmente** tramite una **web app** o con un **steering wheel fisico**, che consentono di gestire in tempo reale i movimenti del veicolo e di monitorarne lo stato.
 
----
 
 ### 🔧 Struttura del progetto
 
@@ -27,7 +26,6 @@ Attualmente, il sistema può essere controllato **manualmente** tramite una **we
   - Monitorare lo stato del veicolo in tempo reale.  
   - Interagire con Arduino tramite connessione Wi-Fi.
 
----
 
 ### ⚡ Obiettivo
 
@@ -37,12 +35,10 @@ In questa fase il veicolo è **a controllo manuale**, ma il progetto è pensato 
 
 
 
-
 ## 📁 Struttura dettagliata dei file
 
 Questa sezione descrive nel dettaglio i file che compongono il progetto e il loro ruolo all’interno del sistema.
 
----
 
 ### 🧠 `autonomous_drive_firmware/`
 
@@ -89,7 +85,6 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
   Invia comandi di movimento alla scheda Arduino e aggiorna lo stato del veicolo in tempo reale.
 
 ---
-
 
 
 ## Diagramma fisico del sistema
