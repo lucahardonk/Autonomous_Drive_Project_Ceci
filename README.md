@@ -1,3 +1,4 @@
+![Arduino](https://img.shields.io/badge/Arduino-UNO%20R4%20WiFi-00979D?logo=arduino&logoColor=white)
 # 📚 Indice
 
 - [🔧 Struttura del progetto](#-struttura-del-progetto)
