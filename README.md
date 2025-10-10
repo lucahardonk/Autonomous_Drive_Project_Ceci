@@ -135,4 +135,4 @@ Questo schema mostra il collegamento fisico tra i principali componenti del veic
 ---
 ## 👤 Autori
 
-Progetto realizzato da **Cecilia Cavosi e Luca Hardonk**
+Progetto realizzato da **Cecilia Cavosi** e **Luca Hardonk**.
