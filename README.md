@@ -1,1 +1,1 @@
-!(physical_diagram.png)
+![](physical_diagram.png)
