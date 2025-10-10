@@ -1,4 +1,3 @@
-![Arduino](https://img.shields.io/badge/Arduino-UNO%20R4%20WiFi-00979D?logo=arduino&logoColor=white)            ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
 # 📚 Indice
 
 - [🔧 Struttura del progetto](#-struttura-del-progetto)
@@ -8,6 +7,8 @@
 - [👤 Autori](#-autori)
 
 # 🚗 Autonomous Drive Project
+
+![Arduino](https://img.shields.io/badge/Arduino-UNO%20R4%20WiFi-00979D?logo=arduino&logoColor=white) ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-Arduino%20UNO%20R4%20WiFi-blue) ![Language](https://img.shields.io/badge/Language-C%2B%2B%20%7C%20Python%20%7C%20HTML-orange) ![Status](https://img.shields.io/badge/Status-Manual%20Control-yellow) ![Version](https://img.shields.io/badge/Version-1.0.0-lightgrey)
 
 Il progetto **Autonomous Drive** ha l’obiettivo di realizzare una piattaforma sperimentale per la **guida autonoma** in scala ridotta, basata su **Arduino UNO R4 WiFi**.  
 Attualmente, il sistema può essere controllato **manualmente** tramite una **web app** o con un **steering wheel fisico**, che consentono di gestire in tempo reale i movimenti del veicolo e di monitorarne lo stato.
