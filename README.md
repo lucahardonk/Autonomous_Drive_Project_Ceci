@@ -64,7 +64,6 @@ Contiene il firmware principale scritto in **C/C++** per **Arduino UNO R4 WiFi**
 - **`autonomous_drive_firmware.ino`**  
   File principale dell’applicazione Arduino: inizializza i moduli, imposta la connessione Wi-Fi e coordina l’esecuzione del programma.
 
----
 
 ### ⚙️ `autonomous_drive_hardware_steer/`
 
@@ -74,7 +73,6 @@ Contiene il file Python per la gestione hardware dello sterzo.
   Gestisce l' **endpoint** di comunicazione con la scheda Arduino, mantenendo la frequenza di aggiornamento a **50 Hz**.  
   Si occupa della trasmissione stabile dei comandi di sterzo e della gestione dei segnali hardware.
 
----
 
 ### 🌐 `autonomous_drive_webapp/`
 
