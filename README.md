@@ -2,8 +2,9 @@
 
 - [🚗 Struttura del progetto](#-struttura-del-progetto)
 - [📁 Struttura dettagliata dei file](#-struttura-dettagliata-dei-file)
+- [⚙️ Installazione e Avvio](#-installazione-e-avvio)
 - [🧩 Diagramma fisico del sistema](#-diagramma-fisico-del-sistema)
-
+- [👤 Autori](#-autori)
 
 # 🚗 Autonomous Drive Project
 
@@ -94,6 +95,27 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
 ---
 
 
+## ⚙️ Installazione e Avvio
+
+1. **Caricare il firmware Arduino**
+   - Apri `autonomous_drive_firmware.ino` in Arduino IDE.  
+   - Seleziona la scheda **Arduino UNO R4 WiFi**.  
+   - Carica il codice sulla scheda.
+
+2. **Avviare il modulo di sterzo hardware**
+   - Apri una console nella cartella `autonomous_drive_hardware_steer/`.  
+   - Esegui:  
+     ```bash
+     python3 main.py
+     ```
+
+3. **Aprire la web app**
+   - Apri `index.html` in un browser compatibile (Chrome, Edge, Firefox).  
+   - Controlla che il dispositivo Arduino sia connesso alla stessa rete Wi-Fi.
+
+---
+
+
 ## 🔌 Diagramma fisico del sistema
 
 Questo schema mostra il collegamento fisico tra i principali componenti del veicolo:<br>
@@ -105,3 +127,12 @@ Questo schema mostra il collegamento fisico tra i principali componenti del veic
 🔁 Servo motore – alimentato a 6V, gestisce la direzione del veicolo.<br>
 <br>
 ![](physical_diagram.png)
+
+
+
+
+
+---
+## 👤 Autori
+
+Progetto realizzato da **Cecilia Cavosi e Luca Hardonk**
