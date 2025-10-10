@@ -95,7 +95,7 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
 ---
 
 
-## ⚙️ Installazione e avvio
+## ▶️ Installazione e avvio
 
 1. **Caricare il firmware Arduino**
    - Apri `autonomous_drive_firmware.ino` in Arduino IDE.  
