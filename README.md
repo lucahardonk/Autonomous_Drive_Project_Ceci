@@ -1,10 +1,17 @@
-## 🚗 Autonomous Drive Project
+## 📚 Indice
+
+- [🚗 Struttura del progetto](#-struttura-del-progetto)
+- [📁 Struttura dettagliata dei file](#-struttura-dettagliata-dei-file)
+- [🧩 Diagramma fisico del sistema](#-diagramma-fisico-del-sistema)
+
+
+# 🚗 Autonomous Drive Project
 
 Il progetto **Autonomous Drive** ha l’obiettivo di realizzare una piattaforma sperimentale per la **guida autonoma** in scala ridotta, basata su **Arduino UNO R4 WiFi**.  
 Attualmente, il sistema può essere controllato **manualmente** tramite una **web app** o con un **steering wheel fisico**, che consentono di gestire in tempo reale i movimenti del veicolo e di monitorarne lo stato.
 
 
-### 🔧 Struttura del progetto
+## 🔧 Struttura del progetto
 
 - **🧠 `autonomous_drive_firmware/`**  
   Contiene il firmware per **Arduino**, scritto in C/C++.  
@@ -87,7 +94,7 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
 ---
 
 
-## Diagramma fisico del sistema
+## 🔌 Diagramma fisico del sistema
 
 Questo schema mostra il collegamento fisico tra i principali componenti del veicolo:<br>
 🔋 Batteria (12V) – alimenta l’intero sistema.<br>
