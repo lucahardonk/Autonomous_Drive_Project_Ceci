@@ -6,8 +6,8 @@
 #include "Encoder.h" 
 #include "Sterzo.h"
 
-const char* ssid = "casa_wireless";
-const char* password = "wireless_casa_88";
+const char* ssid = "iPhone di Luca"; //const char* ssid = "casa_wireless";
+const char* password = "1234567890"; //const char* password = "wireless_casa_88";
 
 // ── Servo ──────────────────────
 Sterzo sterzo;
