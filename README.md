@@ -3,6 +3,7 @@
 - [🔧 Struttura del progetto](#-struttura-del-progetto)
 - [📁 Struttura dettagliata dei file](#-struttura-dettagliata-dei-file)
 - [🚀 Installazione e avvio](#-installazione-e-avvio)
+- [🖼️ Foto del prototipo](#-foto-del-prototipo)
 - [🧩 Diagramma fisico del sistema](#-diagramma-fisico-del-sistema)
 - [👤 Autori](#-autori)
 
@@ -114,6 +115,15 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
 3. **Aprire la web app**
    - Apri `index.html` in un browser compatibile (Chrome, Edge, Firefox).  
    - Controlla che il dispositivo Arduino sia connesso alla stessa rete Wi-Fi.
+
+---
+
+
+## 🖼️ Foto del prototipo
+
+Vista frontale, laterale, posteriore e dall’alto del veicolo sperimentale:
+
+<p align="center"> <img src="front_car.jpeg" width="45%" alt="Vista frontale"> <img src="rear_car.jpeg" width="45%" alt="Vista posteriore"><br><br> <img src="left_side_car.jpeg" width="45%" alt="Vista laterale"> <img src="top_car.jpeg" width="45%" alt="Vista dall’alto"> </p>
 
 ---
 
