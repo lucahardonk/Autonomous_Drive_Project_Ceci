@@ -3,7 +3,7 @@
 - [🔧 Struttura del progetto](#-struttura-del-progetto)
 - [📁 Struttura dettagliata dei file](#-struttura-dettagliata-dei-file)
 - [🚀 Installazione e avvio](#-installazione-e-avvio)
-- [🖼️ Foto del prototipo](#-foto-del-prototipo)
+- [🖼️ Foto del prototipo](#%EF%B8%8F-foto-del-prototipo)
 - [🧩 Diagramma fisico del sistema](#-diagramma-fisico-del-sistema)
 - [👤 Autori](#-autori)
 
