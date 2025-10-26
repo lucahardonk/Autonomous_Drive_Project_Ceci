@@ -52,7 +52,7 @@ Il sistema è attualmente controllabile **manualmente**, sia tramite una **web a
   In questo modo, ogni modifica alla libreria viene immediatamente resa disponibile in Arduino IDE.  
   ```bash
   ./sync_car_library.sh
-
+  ```
 
 ### ⚡ Obiettivo
 
@@ -149,6 +149,7 @@ Questa libreria è progettata per essere riutilizzabile in progetti Arduino:
 può essere copiata direttamente nella cartella `~/Arduino/libraries/` oppure sincronizzata automaticamente tramite lo script Bash incluso nel progetto:
 ```bash
 ./sync_car_library.sh
+```
 
 ---
 
