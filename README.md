@@ -123,7 +123,7 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
 
 Vista frontale, laterale, posteriore e dall’alto del veicolo sperimentale:
 
-<p align="center"> <img src="front_car.jpeg" width="45%" alt="Vista frontale"> <img src="rear_car.jpeg" width="45%" alt="Vista posteriore"><br><br> <img src="left_side_car.jpeg" width="45%" alt="Vista laterale"> <img src="top_car.jpeg" width="45%" alt="Vista dall’alto"> </p>
+<p align="center"> <img src="images/front_car.jpeg" width="45%" alt="Vista frontale"> <img src="images/rear_car.jpeg" width="45%" alt="Vista posteriore"><br><br> <img src="images/left_side_car.jpeg" width="45%" alt="Vista laterale"> <img src="images/top_car.jpeg" width="45%" alt="Vista dall’alto"> </p>
 
 ---
 
@@ -138,7 +138,7 @@ Questo schema mostra il collegamento fisico tra i principali componenti del veic
 ⚡ Encoder – forniscono il feedback di rotazione per il controllo dei motori.<br>
 🔁 Servo motore – alimentato a 6V, gestisce la direzione del veicolo.<br>
 <br>
-![](physical_diagram.png)
+![](images/physical_diagram.png)
 
 
 
