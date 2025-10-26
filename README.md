@@ -9,33 +9,49 @@
 
 # 🚗 Autonomous Drive Project
 
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-Arduino%20UNO%20R4%20WiFi-blue?logo=arduino) ![Language](https://img.shields.io/badge/Language-C%2B%2B%20%7C%20Python%20%7C%20HTML%20%7C%20CSS%20%7C%20JS%20%7C%20Arduino-orange) ![Status](https://img.shields.io/badge/Status-Manual%20Control-yellow) ![Version](https://img.shields.io/badge/Version-1.0.0-lightgrey)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-Arduino%20UNO%20R4%20WiFi-blue?logo=arduino) ![Language](https://img.shields.io/badge/Language-C%2B%2B%20%7C%20Python%20%7C%20HTML%20%7C%20CSS%20%7C%20JS%20%7C%20Arduino-orange) ![Status](https://img.shields.io/badge/Status-Manual%20Control-yellow) ![Version](https://img.shields.io/badge/Version-1.1.0-lightgrey)
 
-Il progetto **Autonomous Drive** ha l’obiettivo di realizzare una piattaforma sperimentale per la **guida autonoma** in scala ridotta, basata su **Arduino UNO R4 WiFi**.  
-Attualmente, il sistema può essere controllato **manualmente** tramite una **web app** o con un **steering wheel fisico**, che consentono di gestire in tempo reale i movimenti del veicolo e di monitorarne lo stato.
+Il progetto **Autonomous Drive** ha l’obiettivo di realizzare una piattaforma sperimentale per la **guida autonoma in scala ridotta**, basata su **Arduino UNO R4 WiFi**.  
+Il sistema è attualmente controllabile **manualmente**, sia tramite una **web app** sia attraverso un **modulo hardware di sterzo**, con feedback in tempo reale tra Arduino e Raspberry Pi.
+
+---
 
 
 ## 🔧 Struttura del progetto
 
-- **🧠 `autonomous_drive_firmware/`**  
-  Contiene il firmware per **Arduino**, scritto in C/C++.  
-  Si occupa della gestione dei componenti principali:  
-  - Lettura degli **encoder** per monitorare la velocità e la posizione delle ruote.  
-  - Controllo dei **motori DC** e del **servo sterzo**.  
-  - Comunicazione Wi-Fi con la web app per ricevere comandi di guida tramite un API endpoint.  
+- **🧠 `car_library/`**  
+  Nuova libreria sviluppata per gestire i principali componenti del veicolo (motori, servo, encoder).  
+  Contiene classi modulari in **C++**, facilmente integrabili in progetti Arduino.  
+  La libreria può essere installata localmente nella cartella `Arduino/libraries` tramite lo script di sincronizzazione.
+
+- **📡 `autonomous_drive_serial_comunication_firmware/`**  
+  Nuovo firmware che gestisce la **comunicazione seriale tra Raspberry Pi e Arduino**.  
+  Implementa uno scambio di messaggi in formato **JSON** per:
+  - Ricevere comandi di movimento e sterzata da Raspberry Pi.  
+  - Inviare feedback su encoder e velocità delle ruote.  
 
 - **⚙️ `autonomous_drive_hardware_steer/`**  
-  Contiene il codice Python per la gestione dello **sterzo hardware**.  
-  Il modulo gestisce:  
-  - L' **endpoint** dedicato alla trasmissione dei comandi di direzione.  
-  - La frequenza di aggiornamento (50 Hz) e la stabilità del segnale.  
+  Contiene lo script Python che gestisce lo **sterzo fisico** del veicolo, tramite endpoint a 50 Hz.  
+  Comunica con Arduino per inviare comandi di direzione e ricevere feedback.
 
 - **🌐 `autonomous_drive_webapp/`**  
-  Include l’interfaccia web sviluppata in **HTML, CSS e JavaScript**.  
-  L’app permette di:  
-  - Inviare comandi manuali di **avanti, indietro, destra e sinistra**.  
-  - Monitorare lo stato del veicolo in tempo reale.  
-  - Interagire con Arduino tramite connessione Wi-Fi.
+  Include la web app (HTML, CSS, JS) per il **controllo remoto del veicolo**.  
+  Permette di inviare comandi direzionali e visualizzare lo stato del veicolo in tempo reale.
+
+- **📂 `documentation/`**  
+  Raccolta di **manuali e PDF tecnici** dei vari moduli.
+
+- **🖼️ `images/`**  
+  Contiene tutte le immagini e i diagrammi utilizzati nel README.
+
+- **📝 `README.md`**  
+  Documento principale del progetto, aggiornato con la descrizione di tutte le componenti.
+
+- **🔁 `sync_car_library.sh`**  
+  Nuovo script Bash che permette di **sincronizzare automaticamente** la cartella `car_library` del progetto con la directory `~/Arduino/libraries/`.  
+  In questo modo, ogni modifica alla libreria viene immediatamente resa disponibile in Arduino IDE.  
+  ```bash
+  ./sync_car_library.sh
 
 
 ### ⚡ Obiettivo
@@ -45,7 +61,6 @@ In questa fase il veicolo è **a controllo manuale**, ma il progetto è pensato 
 ---
 
 
-
 ## 📁 Struttura dettagliata dei file
 
 Questa sezione descrive nel dettaglio i file che compongono il progetto e il loro ruolo all’interno del sistema.
@@ -53,7 +68,7 @@ Questa sezione descrive nel dettaglio i file che compongono il progetto e il lor
 
 ### 🧠 `autonomous_drive_firmware/`
 
-Contiene il firmware principale scritto in **C/C++** per **Arduino UNO R4 WiFi**.  
+E' contenuto nella directory **'autonomous_drive_hardware_steer'** ed ha al suo interno il firmware principale scritto in **C/C++** per **Arduino UNO R4 WiFi**.  
 È responsabile della logica di controllo del veicolo e della comunicazione con la web app.
 
 - **`Encoder.h` / `Encoder.cpp`**  
@@ -74,11 +89,19 @@ Contiene il firmware principale scritto in **C/C++** per **Arduino UNO R4 WiFi**
 
 ### ⚙️ `autonomous_drive_hardware_steer/`
 
-Contiene il file Python per la gestione hardware dello sterzo.  
+Contiene il file Python per la gestione hardware dello sterzo e il firmware per l'arduino.  
+
+#### Descrizione dei file
 
 - **`main.py`**  
-  Gestisce l' **endpoint** di comunicazione con la scheda Arduino, mantenendo la frequenza di aggiornamento a **50 Hz**.  
-  Si occupa della trasmissione stabile dei comandi di sterzo e della gestione dei segnali hardware.
+  Script principale che gestisce la comunicazione seriale con Arduino.  
+  Mantiene una frequenza di aggiornamento costante di **50 Hz** e invia i comandi ricevuti dal volante, assicurando una risposta fluida e stabile durante la guida manuale.  
+  È inoltre responsabile della ricezione dei feedback dai sensori di bordo.
+
+- **`output_steering_wheel.py`**  
+  Script Python basato su **Pygame** per la lettura di un volante USB collegato al PC.  
+  Rileva automaticamente il dispositivo e mostra in tempo reale lo stato degli **assi** (rotazione e pedali) e dei **pulsanti**.  
+  Viene utilizzato per testare e calibrare il volante prima dell’invio dei comandi ad Arduino.
 
 
 ### 🌐 `autonomous_drive_webapp/`
@@ -95,8 +118,39 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
   Contiene la logica di controllo lato client.  
   Invia comandi di movimento alla scheda Arduino e aggiorna lo stato del veicolo in tempo reale.
 
----
+### 🧩 `car_library/`
 
+Libreria personalizzata per la gestione modulare del veicolo.  
+Include tutti i moduli fondamentali per il controllo dei motori, la lettura degli encoder e la gestione dello sterzo.  
+
+car_library/
+│
+├── examples/
+│ └── Car_Test/
+│ └── Car_Test.ino
+│
+├── src/
+│ ├── Car.h / Car.cpp
+│ ├── Encoder.h / Encoder.cpp
+│ ├── Motor.h / Motor.cpp
+│ └── Sterzo.h / Sterzo.cpp
+│
+└── library.properties
+
+
+#### Descrizione dei moduli
+
+- **`Car`** → classe principale che integra i moduli *Motor* e *Sterzo*, coordinando il movimento generale del veicolo.  
+- **`Motor`** → controlla i motori DC (direzione, potenza, PWM) e fornisce funzioni di gestione della velocità.  
+- **`Encoder`** → si occupa della lettura degli impulsi dagli encoder e del calcolo della velocità di rotazione.  
+- **`Sterzo`** → gestisce il servo motore responsabile dell’angolo di sterzata.  
+
+Questa libreria è progettata per essere riutilizzabile in progetti Arduino:  
+può essere copiata direttamente nella cartella `~/Arduino/libraries/` oppure sincronizzata automaticamente tramite lo script Bash incluso nel progetto:
+```bash
+./sync_car_library.sh
+
+---
 
 ## 🚀 Installazione e avvio
 
