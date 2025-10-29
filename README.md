@@ -123,6 +123,7 @@ Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata 
 Libreria personalizzata per la gestione modulare del veicolo.  
 Include tutti i moduli fondamentali per il controllo dei motori, la lettura degli encoder e la gestione dello sterzo.  
 
+```bash
 car_library/
 │
 ├── examples/
@@ -136,7 +137,7 @@ car_library/
 │ └── Sterzo.h / Sterzo.cpp
 │
 └── library.properties
-
+```
 
 #### Descrizione dei moduli
 
