@@ -68,16 +68,16 @@ while True:
     motorLeftPwm  = base_pwm
     motorRightPwm = base_pwm
     if steer < -0.05:   # turning left
-        motorLeftPwm  = int(base_pwm * (1 - abs(steer) * 0.5))
+        motorLeftPwm  = int(base_pwm)
     elif steer > 0.05:  # turning right
-        motorRightPwm = int(base_pwm * (1 - abs(steer) * 0.5))
+        motorRightPwm = int(base_pwm)
 
     # --- Build JSON command ---
     msg = json.dumps({
-        "motorLeftPwm":  motorLeftPwm,
-        "motorRightPwm": motorRightPwm,
-        "direction":     direction,
-        "steerAngle":    steerAngle
+        "LPwm":  motorLeftPwm,
+        "RPwm": motorRightPwm,
+        "D":     direction,
+        "S":    steerAngle
     })
 
     # --- Send UDP ---
@@ -89,3 +89,4 @@ while True:
           f"Steer={steerAngle:4d} | L={motorLeftPwm:3d} | R={motorRightPwm:3d}")
 
     time.sleep(0.02)  # 50 Hz
+
