@@ -66,29 +66,30 @@ void loop() {
   unsigned long now = millis();
 
   // ── Populate jsonOut and broadcast every 20 ms ─
-  if (now - lastSend >= 20) {
+  if (now - lastSend >= 10) {
     lastSend = now;
 
     jsonOut.clear();
     jsonOut["time"] = now;
-    jsonOut["leftCount"] = myCar.getLeftEncoderCount();
-    jsonOut["wheelLeftW"] = myCar.getLeftEncoderVelocity();
-    jsonOut["rightCount"] = myCar.getRightEncoderCount();
-    jsonOut["wheelRightW"] = myCar.getRightEncoderVelocity();
+    jsonOut["LCount"] = myCar.getLeftEncoderCount();
+    jsonOut["LW"] = myCar.getLeftEncoderVelocity();
+    jsonOut["RCount"] = myCar.getRightEncoderCount();
+    jsonOut["RW"] = myCar.getRightEncoderVelocity();
 
     sendJson(jsonOut, broadcastIp, udpOutPort);
   }
 
   // ── Receive JSON messages into jsonIn ──────────
   if (receiveJson(jsonIn)) {
-    motorLeftPwm  = constrain(jsonIn["motorLeftPwm"]  | 0,   0,   255);
-    motorRightPwm = constrain(jsonIn["motorRightPwm"] | 0,   0,   255);
-    direction     = constrain(jsonIn["direction"]     | 1,  -1,    1);
-    steerAngle    = constrain(jsonIn["steerAngle"]    | 0,  -90,   90);
+    motorLeftPwm  = constrain(jsonIn["LPwm"]  | 0,   0,   255);
+    motorRightPwm = constrain(jsonIn["RPwm"] | 0,   0,   255);
+    direction     = constrain(jsonIn["D"]     | 1,  -1,    1);
+    steerAngle    = constrain(jsonIn["S"]    | 0,  -90,   90);
 
       // ✅ Apply commands to the car
-    myCar.drive(motorLeftPwm, motorRightPwm, direction);
     myCar.steer(steerAngle);
+    myCar.drive(motorLeftPwm, motorRightPwm, direction);
+    
 
     /*
       Serial.println("➡️ Command received:");
