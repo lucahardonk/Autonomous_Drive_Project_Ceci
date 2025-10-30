@@ -1,5 +1,7 @@
 #include <ArduinoJson.h>
 #include <Car.h>
+#include <WiFiS3.h>
+#include <ArduinoOTA.h>
 
 Car myCar;
 unsigned long lastFeedback = 0;
@@ -10,19 +12,45 @@ int motorRightPwm = 0;
 int direction = 1;
 int steerAngle = 0;
 
+// ─────────────────────────────────────────────
+// Wi-Fi credentials
+// ─────────────────────────────────────────────
+const char* ssid     = "casa_wireless";
+const char* password = "wireless_casa_88";
+
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(1000000);
   myCar.begin();
   myCar.resetEncoders();
   Serial.println(F("🚗 Car ready for JSON serial control"));
+
+  // ---------- Wi-Fi connection ----------
+  Serial.print("Connecting to WiFi...");
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println();
+  Serial.print("Connected! IP address: ");
+  Serial.println(WiFi.localIP());
+
+  // ---------- OTA setup ----------
+  ArduinoOTA.begin(WiFi.localIP(), "uno_r4_wifi", "otapass", InternalStorage);
+  Serial.println("✅ OTA service ready! You can now upload over Wi-Fi.");
 }
 
+// ─────────────────────────────────────────────
+// Main loop
+// ─────────────────────────────────────────────
 void loop() {
-  handleSerialJson();        // process incoming JSON
+  ArduinoOTA.poll();  // keep OTA alive
+
+  handleSerialJson(); // process incoming JSON
   myCar.steer(steerAngle);
   myCar.drive(motorLeftPwm, motorRightPwm, direction);
 
-  if (millis() - lastFeedback > 10) {   // send every 100 ms
+  if (millis() - lastFeedback > 10) {   // send every 10 ms
     sendFeedback();
     lastFeedback = millis();
   }
@@ -41,10 +69,10 @@ void handleSerialJson() {
       DeserializationError err = deserializeJson(doc, input);
       if (!err && doc.containsKey("cmd")) {
         JsonObject cmd = doc["cmd"];
-        motorLeftPwm  = constrain(cmd["motorLeftPwm"] | 0, 0, 255);
+        motorLeftPwm  = constrain(cmd["motorLeftPwm"]  | 0, 0, 255);
         motorRightPwm = constrain(cmd["motorRightPwm"] | 0, 0, 255);
-        direction     = constrain(cmd["direction"] | 1, -1, 1);
-        steerAngle    = constrain(cmd["steerAngle"] | 0, -90, 90);
+        direction     = constrain(cmd["direction"]     | 1, -1, 1);
+        steerAngle    = constrain(cmd["steerAngle"]    | 0, -90, 90);
       }
       input = "";
     } else {
