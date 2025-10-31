@@ -58,7 +58,7 @@ void setup() {
 void loop() {
   unsigned long now = millis();
 
-  if (now - prevTime >= 50) {  // 20 Hz
+  if (now - prevTime >= 20) {  // 50 Hz
     long Lc = myCar.getLeftEncoderCount();
     long Rc = myCar.getRightEncoderCount();
 

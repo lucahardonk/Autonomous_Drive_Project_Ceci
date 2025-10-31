@@ -27,17 +27,22 @@
       </div>
     </div>
 
-    <!-- ✅ CAMERA PLACEHOLDER RIGHT SIDE -->
+    <!-- ✅ CAMERA STREAM RIGHT SIDE -->
     <div class="camera-box">
-      <h3>Camera View</h3>
+      <h3>RGB Camera</h3>
       <div class="camera-placeholder">
-        <span>Video Stream Here</span>
+        <img id="cameraStream" src="http://192.168.1.149:8080/video" />
       </div>
     </div>
 
+    <div class="camera-box">
+      <h3>Depth Map</h3>
+      <div class="camera-placeholder depth-box">
+        <img id="depthStream" src="http://192.168.1.149:8080/depth" />
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
-
 </html>
