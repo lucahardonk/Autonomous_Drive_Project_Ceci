@@ -13,7 +13,7 @@ while true; do
   echo "🚗 Nuovo ciclo di test $(date)"
   
   for pwm in "${PWMS[@]}"; do
-    json="{\"LPwm\":0, \"RPwm\":$pwm, \"D\":1, \"S\":0}"
+    json="{\"LPwm\":$pwm, \"RPwm\":0, \"D\":1, \"S\":0}"
     echo -n "$json" | nc -w1 -u $IP $PORT
     echo "Inviato: $json"
 

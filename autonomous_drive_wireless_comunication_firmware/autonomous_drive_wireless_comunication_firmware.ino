@@ -79,10 +79,6 @@ void loop() {
     L_RPM = 2.783f * L_RPM;
     R_RPM = 2.783f * R_RPM;
 
-    // Evita valori negativi dovuti al rumore
-    if (L_RPM < 0) L_RPM = 0;
-    if (R_RPM < 0) R_RPM = 0;
-
     jsonOut.clear();
     jsonOut["time"] = now;
     jsonOut["LCount"] = Lc;
