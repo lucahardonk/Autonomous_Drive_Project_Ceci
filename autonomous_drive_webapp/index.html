@@ -1,28 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UNO R4 WiFi Car Controller</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Telemetry Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>UNO R4 WiFi Car Controller</h2>
 
-  <div class="steering">
-    <canvas id="wheel" width="200" height="200"></canvas>
-    <span id="steerVal">0°</span>
-  </div>
+  <h1>Car Telemetry Dashboard and Camera view</h1>
 
-  <div class="controls">
-    <button id="direction" onclick="toggleDirection()">Forward</button>
-  </div>
+  <div class="layout-container">
 
-  <div class="pedals">
-    <button id="gas" onclick="accelerate()">🚀 Gas</button>
-    <button id="brake" onclick="brake()">🛑 Brake</button>
+    <!-- ✅ TELEMETRY LEFT SIDE -->
+    <div class="telemetry-container">
+      <div class="telemetry-box">
+        <h3>Left Wheel</h3>
+        <p><strong>Encoder Count:</strong> <span id="LCount">0</span></p>
+        <p><strong>Angular Speed:</strong> <span id="LW">0</span> rad/s</p>
+      </div>
+
+      <div class="telemetry-box">
+        <h3>Right Wheel</h3>
+        <p><strong>Encoder Count:</strong> <span id="RCount">0</span></p>
+        <p><strong>Angular Speed:</strong> <span id="RW">0</span> rad/s</p>
+      </div>
+    </div>
+
+    <!-- ✅ CAMERA PLACEHOLDER RIGHT SIDE -->
+    <div class="camera-box">
+      <h3>Camera View</h3>
+      <div class="camera-placeholder">
+        <span>Video Stream Here</span>
+      </div>
+    </div>
+
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
