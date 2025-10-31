@@ -69,8 +69,11 @@ float Encoder::getVelocity() {
   lastPosition = currentCount;
   lastUpdateTime = now;
 
-  float newVelocity = (float)deltaCount * (2.0f * PI / (float)CPR) / ((float)dt / 1e6f);
-  newVelocity = newVelocity/4;
+  float newVelocity = ( (float)deltaCount * (2.0 * PI) * 1000000) / ( (float)CPR * dt );   // dt in ms → OK
+
+  //newVelocity = newVelocity/4;
 
   return newVelocity;
 }
+
+int Encoder::getCpr(){return CPR;}

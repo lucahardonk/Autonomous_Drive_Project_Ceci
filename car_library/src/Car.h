@@ -23,7 +23,6 @@ public:
   void resetEncoders();
 
 
-private:
   Encoder leftEncoder;
   Encoder rightEncoder;
   Motor leftMotor;

@@ -14,6 +14,7 @@ public:
   void printState();
   void update();
   float getVelocity();
+  int getCpr();
 
 private:
   uint8_t pinA, pinB;

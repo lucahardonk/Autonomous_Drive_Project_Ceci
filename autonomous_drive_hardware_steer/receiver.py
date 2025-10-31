@@ -8,7 +8,7 @@ import threading
 UDP_IP = "0.0.0.0"
 UDP_PORT = 9084
 
-latest_telemetry = {"LCount": 0, "LW": 0, "RCount": 0, "RW": 0}
+latest_telemetry = {"LCount": 0, "L_RPM": 0, "RCount": 0, "R_RPM": 0}
 
 def udp_listener():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -22,9 +22,9 @@ def udp_listener():
             latest_telemetry.update(telemetry)
 
             print(f"LCount: {latest_telemetry['LCount']}, "
-                  f"LW:   {latest_telemetry['LW']:.2f}, "
+                  f"L_RPM:   {latest_telemetry['L_RPM']:.2f}, "
                   f"RCount: {latest_telemetry['RCount']}, "
-                  f"RW:   {latest_telemetry['RW']:.2f}")
+                  f"R_RPM:   {latest_telemetry['R_RPM']:.2f}")
 
         except Exception as e:
             print("⚠️ JSON Error:", e)

@@ -13,8 +13,8 @@ const char* password = "1234567890"; //const char* password = "wireless_casa_88"
 Sterzo sterzo;
 
 // ── Encoder ──────────────────────
-Encoder leftEncoder(2, 3, 836);
-Encoder rightEncoder(12, 8, 836);
+Encoder leftEncoder(2, 3, 44);
+Encoder rightEncoder(12, 8, 44);
 
 
 // ── Motors ──────────────────────
