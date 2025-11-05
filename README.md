@@ -40,6 +40,9 @@ Il sistema è attualmente controllabile **manualmente** attraverso un **modulo h
   Contiene lo script Python che gestisce lo **sterzo fisico** del veicolo, tramite endpoint a 50 Hz.  
   Comunica con Arduino per inviare comandi di direzione e ricevere feedback.
 
+- **🧠 `autonomous_drive_firmware/`**
+  Il firmware principale per Arduino UNO R4 WiFi.
+
 - **🌐 `autonomous_drive_webapp/`**  
   Include la web app (HTML, CSS, JS) per controllare lo **stato degli encoder** e la visuale della **RGB camera** e della **depth camera**.
 
@@ -86,14 +89,14 @@ E' contenuto nella directory **'autonomous_drive_hardware_steer'** ed ha al suo 
   Gestiscono il controllo del **servo motore** per la sterzata del veicolo.
 
 - **`WebControl.h` / `WebControl.cpp`**  
-  Si occupano della comunicazione Wi-Fi tra la scheda Arduino e la web app tramite l'endpoint.
+  Si occupano della comunicazione Wi-Fi tra la scheda Arduino e la web app tramite l'endpoint. Usa **UDP**.
 
 - **`autonomous_drive_firmware.ino`**  
   File principale dell’applicazione Arduino: inizializza i moduli, imposta la connessione Wi-Fi e coordina l’esecuzione del programma.
 
 ### ⚙️ `autonomous_drive_serial_comunication_firmware/`
 Contiene il firmware per la comunicazione bidirezionale e seriale tra l'arduino e il rasperry che si scambiano dati in formato **JSON**. Di seguito sono elencati i tipi di comandi in base alla direzione. 
-- **Da Rasperry ad Arduino (comandi)**:
+- **Da Raspberry ad Arduino (comandi)**:
   ```bash
   echo '{"cmd":{"motorLeftPwm":120,"motorRightPwm":130,"direction":1,"steerAngle":15}}' > /dev/ttyACM0
   ```
@@ -104,7 +107,7 @@ Contiene il firmware per la comunicazione bidirezionale e seriale tra l'arduino 
 
 ### ⚙️ `autonomous_drive_wireless_comunication_firmware/`
 Contiene il firmware per la comunicazione bidirezionale e WiFi tra l'arduino e il rasperry che si scambiano dati in formato **JSON**. Contiene anche il file **Secret.h** dove sono scritte le credenziali di autenticazione del WiFi. Di seguito sono elencati i tipi di comandi in base alla direzione.
-- **Da Rasperry ad Arduino (comandi)**:
+- **Da Raspberry ad Arduino (comandi)**:
   ```bash
   echo '{"LPwm":200,"RPwm":200,"D":1,"S":20}' | nc -u -w1 192.168.1.149 9085
   ```
@@ -136,7 +139,7 @@ Contiene il file Python per la gestione hardware dello sterzo e il firmware per 
 
 ### 🌐 `autonomous_drive_webapp/`
 
-Contiene l’interfaccia utente per il visualizzare i dati mandati dagli encoder e la visuale della telecamere in RGB e depth. La webapp è stata sviluppata con **HTML**, **CSS** e **JavaScript**.
+Contiene l’interfaccia utente per il visualizzare i dati mandati dagli encoder e la visuale della telecamera in RGB e depth. La webapp è stata sviluppata con **HTML**, **CSS** e **JavaScript**.
 
 - **`index.html`**  
   Struttura principale della web app: 2 riquadri con valori degli encoder (count e rpm) e 2 finestre per visuale rgb e depth camera.
@@ -198,7 +201,7 @@ può essere copiata direttamente nella cartella `~/Arduino/libraries/` oppure si
      ```
 
 3. **Aprire la web app** (per vedere feedback encoder e visuale telecamera)
-   - Usa il PC attualment in uso come server con:
+   - Usa il PC attualmente in uso come server con:
      ```bash
      python3 -m http.server 8000
      ``` 
