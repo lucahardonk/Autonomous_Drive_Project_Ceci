@@ -12,7 +12,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-Arduino%20UNO%20R4%20WiFi-blue?logo=arduino) ![Language](https://img.shields.io/badge/Language-C%2B%2B%20%7C%20Python%20%7C%20HTML%20%7C%20CSS%20%7C%20JS%20%7C%20Arduino-orange) ![Status](https://img.shields.io/badge/Status-Manual%20Control-yellow) ![Version](https://img.shields.io/badge/Version-1.1.0-lightgrey)
 
 Il progetto **Autonomous Drive** ha l’obiettivo di realizzare una piattaforma sperimentale per la **guida autonoma in scala ridotta**, basata su **Arduino UNO R4 WiFi**.  
-Il sistema è attualmente controllabile **manualmente**, sia tramite una **web app** sia attraverso un **modulo hardware di sterzo**, con feedback in tempo reale tra Arduino e Raspberry Pi.
+Il sistema è attualmente controllabile **manualmente** attraverso un **modulo hardware di sterzo**, con feedback in tempo reale tra Arduino e Raspberry Pi.
 
 ---
 
@@ -25,18 +25,23 @@ Il sistema è attualmente controllabile **manualmente**, sia tramite una **web a
   La libreria può essere installata localmente nella cartella `Arduino/libraries` tramite lo script di sincronizzazione.
 
 - **📡 `autonomous_drive_serial_comunication_firmware/`**  
-  Nuovo firmware che gestisce la **comunicazione seriale tra Raspberry Pi e Arduino**.  
+  Firmware che gestisce la **comunicazione seriale tra Raspberry Pi e Arduino**.  
   Implementa uno scambio di messaggi in formato **JSON** per:
   - Ricevere comandi di movimento e sterzata da Raspberry Pi.  
-  - Inviare feedback su encoder e velocità delle ruote.  
+  - Inviare feedback su encoder e velocità delle ruote.
+
+- **📡 `autonomous_drive_wireless_comunication_firmware/`**  
+  Firmware che gestisce la **comunicazione WiFi tra Raspberry Pi e Arduino**.
+  Implementa uno scambio di messaggi in formato **JSON** per:
+  - Ricevere comandi di movimento e sterzata da Raspberry Pi.  
+  - Inviare feedback su encoder e velocità delle ruote.
 
 - **⚙️ `autonomous_drive_hardware_steer/`**  
   Contiene lo script Python che gestisce lo **sterzo fisico** del veicolo, tramite endpoint a 50 Hz.  
   Comunica con Arduino per inviare comandi di direzione e ricevere feedback.
 
 - **🌐 `autonomous_drive_webapp/`**  
-  Include la web app (HTML, CSS, JS) per il **controllo remoto del veicolo**.  
-  Permette di inviare comandi direzionali e visualizzare lo stato del veicolo in tempo reale.
+  Include la web app (HTML, CSS, JS) per controllare lo **stato degli encoder** e la visuale della **RGB camera** e della **depth camera**.
 
 - **📂 `documentation/`**  
   Raccolta di **manuali e PDF tecnici** dei vari moduli.
@@ -86,6 +91,18 @@ E' contenuto nella directory **'autonomous_drive_hardware_steer'** ed ha al suo 
 - **`autonomous_drive_firmware.ino`**  
   File principale dell’applicazione Arduino: inizializza i moduli, imposta la connessione Wi-Fi e coordina l’esecuzione del programma.
 
+### ⚙️ `autonomous_drive_serial_comunication_firmware/`
+Contiene il firmware per la comunicazione bidirezionale e seriale tra l'arduino e il rasperry che si scambiano dati in formato **JSON**. Di seguito sono elencati i tipi di comandi in base alla direzione. 
+- **Da Rasperry ad Arduino (comandi)**: echo '{"cmd":{"motorLeftPwm":120,"motorRightPwm":130,"direction":1,"steerAngle":15}}' \
+  > /dev/ttyACM0
+- **Da Arduino a Raspberry (feedback)**: cat /dev/ttyACM0 | jq '.fb | {leftCount: .wheelLeftCount, rightCount: .wheelRightCount, leftW: .wheelLeftW, rightW: .wheelRightW}'
+
+### ⚙️ `autonomous_drive_wireless_comunication_firmware/`
+Contiene il firmware per la comunicazione bidirezionale e WiFi tra l'arduino e il rasperry che si scambiano dati in formato **JSON**. Contiene anche il file **Secret.h** dove sono scritte le credenziali di autenticazione del WiFi. Di seguito sono elencati i tipi di comandi in base alla direzione.
+- **Da Rasperry ad Arduino (comandi)**: echo '{"LPwm":200,"RPwm":200,"D":1,"S":20}' \
+ | nc -u -w1 192.168.1.149 9085
+
+- **Da Arduino a Raspberry (feedback)**: nc -ul 9084 | jq '{t:.time, L:.L_RPM, R:.R_RPM}'
 
 ### ⚙️ `autonomous_drive_hardware_steer/`
 
@@ -93,10 +110,13 @@ Contiene il file Python per la gestione hardware dello sterzo e il firmware per 
 
 #### Descrizione dei file
 
-- **`main.py`**  
-  Script principale che gestisce la comunicazione seriale con Arduino.  
-  Mantiene una frequenza di aggiornamento costante di **50 Hz** e invia i comandi ricevuti dal volante, assicurando una risposta fluida e stabile durante la guida manuale.  
-  È inoltre responsabile della ricezione dei feedback dai sensori di bordo.
+- **`sender.py`**  
+  Script che gestisce la comunicazione seriale con Arduino.  
+  Mantiene una frequenza di aggiornamento costante di **50 Hz** e invia i comandi ricevuti dal volante, assicurando una risposta fluida e stabile durante la guida manuale.
+  
+- **`receiver.py`**  
+  Script che gestisce la comunicazione seriale con Arduino.  
+  Mantiene una frequenza di aggiornamento costante di **50 Hz** e riceve i dati degli encoder dall'arduino.
 
 - **`output_steering_wheel.py`**  
   Script Python basato su **Pygame** per la lettura di un volante USB collegato al PC.  
@@ -106,17 +126,16 @@ Contiene il file Python per la gestione hardware dello sterzo e il firmware per 
 
 ### 🌐 `autonomous_drive_webapp/`
 
-Contiene l’interfaccia utente per il controllo remoto del veicolo, sviluppata con **HTML**, **CSS** e **JavaScript**.
+Contiene l’interfaccia utente per il visualizzare i dati mandati dagli encoder e la visuale della telecamere in RGB e depth. La webapp è stata sviluppata con **HTML**, **CSS** e **JavaScript**.
 
 - **`index.html`**  
-  Struttura principale della web app: pulsanti di controllo, area di stato e interfaccia grafica.
+  Struttura principale della web app: 2 riquadri con valori degli encoder (count e rpm) e 2 finestre per visuale rgb e depth camera.
 
 - **`style.css`**  
-  Definisce il layout e lo stile dell’interfaccia (colori, pulsanti, spaziature).
+  Definisce il layout e lo stile dell’interfaccia.
 
 - **`script.js`**  
-  Contiene la logica di controllo lato client.  
-  Invia comandi di movimento alla scheda Arduino e aggiorna lo stato del veicolo in tempo reale.
+  Contiene la logica di controllo lato client. Riceve lo stato degli encoder dall'Arduino e legge i dati dalla telecamera.
 
 ### 🧩 `car_library/`
 
