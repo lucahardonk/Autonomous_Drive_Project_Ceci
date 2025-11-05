@@ -94,15 +94,25 @@ E' contenuto nella directory **'autonomous_drive_hardware_steer'** ed ha al suo 
 ### ⚙️ `autonomous_drive_serial_comunication_firmware/`
 Contiene il firmware per la comunicazione bidirezionale e seriale tra l'arduino e il rasperry che si scambiano dati in formato **JSON**. Di seguito sono elencati i tipi di comandi in base alla direzione. 
 - **Da Rasperry ad Arduino (comandi)**:
-  ```bash echo '{"cmd":{"motorLeftPwm":120,"motorRightPwm":130,"direction":1,"steerAngle":15}}' > /dev/ttyACM0 ```
+  ```bash
+  echo '{"cmd":{"motorLeftPwm":120,"motorRightPwm":130,"direction":1,"steerAngle":15}}' > /dev/ttyACM0
+  ```
 - **Da Arduino a Raspberry (feedback)**:
-  ```bash cat /dev/ttyACM0 | jq '.fb | {leftCount: .wheelLeftCount, rightCount: .wheelRightCount, leftW: .wheelLeftW, rightW: .wheelRightW}' ```
+  ```bash
+  cat /dev/ttyACM0 | jq '.fb | {leftCount: .wheelLeftCount, rightCount: .wheelRightCount, leftW: .wheelLeftW, rightW: .wheelRightW}'
+  ```
 
 ### ⚙️ `autonomous_drive_wireless_comunication_firmware/`
 Contiene il firmware per la comunicazione bidirezionale e WiFi tra l'arduino e il rasperry che si scambiano dati in formato **JSON**. Contiene anche il file **Secret.h** dove sono scritte le credenziali di autenticazione del WiFi. Di seguito sono elencati i tipi di comandi in base alla direzione.
-- **Da Rasperry ad Arduino (comandi)**: ```bash echo '{"LPwm":200,"RPwm":200,"D":1,"S":20}' | nc -u -w1 192.168.1.149 9085 ```
+- **Da Rasperry ad Arduino (comandi)**:
+  ```bash
+  echo '{"LPwm":200,"RPwm":200,"D":1,"S":20}' | nc -u -w1 192.168.1.149 9085
+  ```
 
-- **Da Arduino a Raspberry (feedback)**: ```bash nc -ul 9084 | jq '{t:.time, L:.L_RPM, R:.R_RPM}' ```
+- **Da Arduino a Raspberry (feedback)**:
+  ```bash
+  nc -ul 9084 | jq '{t:.time, L:.L_RPM, R:.R_RPM}'
+  ```
 
 ### ⚙️ `autonomous_drive_hardware_steer/`
 
