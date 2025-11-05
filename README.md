@@ -186,20 +186,27 @@ può essere copiata direttamente nella cartella `~/Arduino/libraries/` oppure si
 ## 🚀 Installazione e avvio
 
 1. **Caricare il firmware Arduino**
-   - Apri `autonomous_drive_firmware.ino` in Arduino IDE.  
+   - Apri `autonomous_drive_firmware.ino` (o un altro firmware) in Arduino IDE.  
    - Seleziona la scheda **Arduino UNO R4 WiFi**.  
    - Carica il codice sulla scheda.
 
-2. **Avviare il modulo di sterzo hardware**
+2. **Avviare il modulo di sterzo hardware** (per mandare comandi all'arduino)
    - Apri una console nella cartella `autonomous_drive_hardware_steer/`.  
    - Esegui:  
      ```bash
-     python3 main.py
+     python3 sender.py
      ```
 
-3. **Aprire la web app**
-   - Apri `index.html` in un browser compatibile (Chrome, Edge, Firefox).  
-   - Controlla che il dispositivo Arduino sia connesso alla stessa rete Wi-Fi.
+3. **Aprire la web app** (per vedere feedback encoder e visuale telecamera)
+   - Usa il PC attualment in uso come server con:
+     ```bash
+     python3 -m http.server 8000
+     ``` 
+   - - Esegui:  
+     ```bash
+     python3 receiver.py
+     ``` 
+   - Apri il browser sul link suggerito nel terminale (ip:porta corretti)
 
 ---
 
