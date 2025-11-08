@@ -1,7 +1,5 @@
 #include <ArduinoJson.h>
 #include <Car.h>
-#include <WiFiS3.h>
-#include <ArduinoOTA.h>
 
 Car myCar;
 unsigned long lastFeedback = 0;
@@ -9,14 +7,9 @@ unsigned long lastFeedback = 0;
 // Command variables
 int motorLeftPwm = 0;
 int motorRightPwm = 0;
-int direction = 1;
+int direction = 1; 
 int steerAngle = 0;
 
-// ─────────────────────────────────────────────
-// Wi-Fi credentials
-// ─────────────────────────────────────────────
-const char* ssid     = "casa_wireless";
-const char* password = "wireless_casa_88";
 
 void setup() {
   Serial.begin(1000000);
@@ -24,33 +17,19 @@ void setup() {
   myCar.resetEncoders();
   Serial.println(F("🚗 Car ready for JSON serial control"));
 
-  // ---------- Wi-Fi connection ----------
-  Serial.print("Connecting to WiFi...");
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println();
-  Serial.print("Connected! IP address: ");
-  Serial.println(WiFi.localIP());
 
-  // ---------- OTA setup ----------
-  ArduinoOTA.begin(WiFi.localIP(), "uno_r4_wifi", "otapass", InternalStorage);
-  Serial.println("✅ OTA service ready! You can now upload over Wi-Fi.");
 }
 
 // ─────────────────────────────────────────────
 // Main loop
 // ─────────────────────────────────────────────
 void loop() {
-  ArduinoOTA.poll();  // keep OTA alive
 
   handleSerialJson(); // process incoming JSON
   myCar.steer(steerAngle);
   myCar.drive(motorLeftPwm, motorRightPwm, direction);
 
-  if (millis() - lastFeedback > 10) {   // send every 10 ms
+  if (millis() - lastFeedback > 1000) {   // send every 10 ms
     sendFeedback();
     lastFeedback = millis();
   }
@@ -100,4 +79,4 @@ void sendFeedback() {
 
   serializeJson(doc, Serial);
   Serial.println();
-}
+}  

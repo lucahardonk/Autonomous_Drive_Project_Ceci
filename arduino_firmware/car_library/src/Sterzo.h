@@ -13,7 +13,7 @@ private:
 
 public:
     // ─────────────── Constructors ───────────────
-    Sterzo(int minLeft = 60, int center = 90, int maxRight = 120);
+    Sterzo(int minLeft = 30, int center = 60, int maxRight = 90);
 
     // ─────────────── Setup ───────────────
     void attach(int pin);
